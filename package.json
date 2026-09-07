@@ -7,7 +7,7 @@
     "node": "20.x"
   },
   "scripts": {
-    "dev": "vercel dev",
+    "dev": "npx serve -l 3000 .",
     "deploy": "vercel deploy --prod",
     "sync": "python3 scripts/sync-partials.py"
   }

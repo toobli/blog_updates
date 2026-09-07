@@ -1,23 +1,25 @@
 /* =========================================================================
-   ShieldTX — Request Access form behavior (shared)
+   ShieldTX — API access request form behavior
 
-   The form markup lives in HTML on each page that uses it (the hero modal in
-   /index.html and the permalink page in /request-access/index.html). This
-   module only attaches behavior — step navigation, the brand dropdown
-   component, validation, and the POST to /api/request-access.
-
-   Usage:
-     window.ShieldTX.bindRequestAccessForm(formEl, { mode })
-
-   - formEl: HTMLFormElement (the <form class="waitlist-form">)
-   - mode:   "modal" | "page"
+   Sibling of request-access-form.js. Same step engine (step navigation,
+   brand dropdowns, per-field validation) but with its own payload and
+   endpoint (/api/api-access), plus:
+   - conditional questions (data-conditional wrappers shown/hidden by a
+     controlling <select> via data-show-when="value1|value2")
+   - the tailored-integration panel (data-tailored) with two actions:
+     book a call (mailto) or continue submitting.
 
    Field/structure contract expected by this module:
-   - <form data-state="idle"> with a [data-form-error] live region
+   - <form data-state="idle" data-endpoint="/api/api-access">
    - <section class="waitlist-step is-active" data-step="1|2|3|result">
    - [data-dropdown] wrappers around hidden <select> + trigger + panel
    - [data-waitlist-back], [data-waitlist-next], [data-waitlist-submit],
      [data-waitlist-done], [data-waitlist-progress]
+   - Conditional wrapper: <div class="waitlist-question is-conditional"
+     data-conditional data-show-when="venueCoverage=valueA|valueB">
+     whose controlling select is [data-controls="thatWrapperName"]… we use
+     a simpler wiring: each conditional wrapper carries data-show-when
+     "<selectName>=<v1>|<v2>" and the module resolves it by name.
    ========================================================================= */
 
 (function () {
@@ -25,12 +27,10 @@
 
   const ShieldTX = (window.ShieldTX = window.ShieldTX || {});
 
-  ShieldTX.bindRequestAccessForm = function bindRequestAccessForm(formEl, opts) {
+  ShieldTX.bindApiAccessForm = function bindApiAccessForm(formEl) {
     const form = typeof formEl === 'string' ? document.querySelector(formEl) : formEl;
-    if (!form || form.dataset.boundRequestAccess === '1') return null;
-    form.dataset.boundRequestAccess = '1';
-    const mode = (opts && opts.mode) || 'modal';
-    form.classList.add(`is-mode-${mode}`);
+    if (!form || form.dataset.boundApiAccess === '1') return null;
+    form.dataset.boundApiAccess = '1';
 
     const root = form.closest('.waitlist-mount') || form.parentElement || form;
     const steps = Array.from(form.querySelectorAll('.waitlist-step'));
@@ -42,22 +42,20 @@
     const errorEl = form.querySelector('[data-form-error]');
     const questionSteps = steps.filter((s) => s.dataset.step !== 'result');
     let idx = Math.max(0, steps.findIndex((s) => s.classList.contains('is-active')));
+    let syncingConditionals = false;
 
     form.querySelectorAll('[data-dropdown]').forEach(initDropdown);
 
     const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    // A "field" is a text input wrapper (.waitlist-field) or a dropdown
-    // question (.waitlist-question). We validate and flag errors per field.
     function fieldContainers(step) {
-      return Array.from(step.querySelectorAll('.waitlist-field, .waitlist-question'));
+      return Array.from(step.querySelectorAll('.waitlist-field, .waitlist-question'))
+        .filter((c) => !(c.classList.contains('is-conditional') && c.hidden));
     }
 
     function containerValid(container) {
       const email = container.querySelector('input[type="email"]');
       if (email) return EMAIL_RE.test(email.value.trim());
-      const text = container.querySelector('input[type="text"]');
-      if (text) return text.value.trim().length > 0;
       const select = container.querySelector('select');
       if (select) {
         if (select.multiple) return Array.from(select.selectedOptions).some((o) => o.value);
@@ -74,18 +72,11 @@
 
     function errorMessageFor(container) {
       if (container.querySelector('input[type="email"]')) return 'Enter a valid email address.';
-      const text = container.querySelector('input[type="text"]');
-      if (text) {
-        const label = container.querySelector('.waitlist-label');
-        return `Enter your ${(label ? label.textContent : 'details').toLowerCase()}.`;
-      }
       const select = container.querySelector('select');
       if (select && select.multiple) return 'Select at least one option.';
       return 'Please select an option.';
     }
 
-    // The inline error <p> is the container's next sibling, so it renders just
-    // below the field/question and outside the <label> for text fields.
     function fieldError(container, create) {
       const existing = container.nextElementSibling;
       if (existing && existing.classList && existing.classList.contains('waitlist-inline-error')) {
@@ -116,8 +107,6 @@
       if (container && containerValid(container)) clearFieldError(container);
     }
 
-    // Flag every incomplete field on the current step; focus the first one.
-    // Returns true when the step is fully valid.
     function revealStepErrors() {
       const step = steps[idx];
       let firstInvalid = null;
@@ -148,8 +137,6 @@
       if (nextBtn) nextBtn.hidden = isLastQ || isResult;
       if (submitBtn) submitBtn.hidden = !isLastQ || isResult;
       if (doneBtn) doneBtn.hidden = !isResult;
-      // Buttons stay enabled so a click can surface validation errors; only
-      // block the submit button while a request is in flight.
       if (nextBtn) nextBtn.disabled = false;
       if (submitBtn) submitBtn.disabled = form.dataset.state === 'submitting';
     }
@@ -163,6 +150,78 @@
       if (focusable) setTimeout(() => focusable.focus(), 60);
     }
 
+    // ---- Conditional questions --------------------------------------
+    // Wrapper: data-conditional + data-show-when="selectName=v1|v2" plus an
+    // optional data-not-when="v3|v4" exclusion list. data-show-when with an
+    // empty value list ("selectName=") means "any non-empty value".
+    const conditionals = Array.from(form.querySelectorAll('[data-conditional]')).map((el) => {
+      const expr = el.dataset.showWhen || '';
+      const [selectName, rawValues] = expr.split('=');
+      return {
+        el,
+        selectName: selectName || '',
+        values: rawValues ? rawValues.split('|') : [],
+        notValues: (el.dataset.notWhen || '').split('|').filter(Boolean),
+      };
+    });
+
+    function syncConditionals() {
+      if (syncingConditionals) return;
+      syncingConditionals = true;
+      try {
+        conditionals.forEach(({ el, selectName, values, notValues }) => {
+          const sel = form.querySelector(`select[name="${selectName}"]`);
+          const show = !!sel && values.includes(sel.value) && !notValues.includes(sel.value);
+          const wasHidden = el.hidden;
+          el.hidden = !show;
+          // Reset the conditional's own selects only when it transitions
+          // from visible → hidden, so a stale multi-select never leaks into
+          // the payload. Never dispatch 'change' here — the form-level
+          // change listener re-enters this function and would recurse.
+          if (!wasHidden && !show) {
+            el.querySelectorAll('select').forEach((s) => {
+              Array.from(s.options).forEach((o) => { o.selected = false; });
+              syncSelectUI(s);
+            });
+            clearFieldError(el);
+          }
+        });
+      } finally {
+        syncingConditionals = false;
+      }
+      updateChrome();
+    }
+
+    // Refresh a select's custom dropdown UI after a programmatic change,
+    // without going through the change event (which re-enters conditionals).
+    function syncSelectUI(select) {
+      const root = select.closest('[data-dropdown]');
+      if (!root) return;
+      const labelEl = root.querySelector('.waitlist-dropdown-label');
+      const panel = root.querySelector('[data-dropdown-panel]');
+      if (!labelEl || !panel) return;
+      const placeholder = labelEl.dataset.placeholder || (labelEl.dataset.placeholder = labelEl.textContent);
+      const picked = Array.from(select.selectedOptions);
+      if (select.multiple) {
+        if (picked.length === 0) {
+          labelEl.textContent = placeholder;
+          labelEl.classList.add('is-placeholder');
+        } else if (picked.length === 1) {
+          labelEl.textContent = picked[0].textContent;
+          labelEl.classList.remove('is-placeholder');
+        } else {
+          labelEl.textContent = `${picked.length} Selected`;
+          labelEl.classList.remove('is-placeholder');
+        }
+      }
+      panel.querySelectorAll('.waitlist-dropdown-row').forEach((row) => {
+        const opt = Array.from(select.options).find((o) => o.value === row.dataset.value);
+        const isSel = !!opt && opt.selected;
+        row.classList.toggle('is-selected', isSel);
+        row.setAttribute('aria-selected', isSel ? 'true' : 'false');
+      });
+    }
+
     if (nextBtn) {
       nextBtn.addEventListener('click', () => {
         if (!revealStepErrors()) return;
@@ -174,12 +233,13 @@
       backBtn.addEventListener('click', () => { if (idx > 0) goTo(idx - 1); });
     }
 
-    form.addEventListener('input', (e) => { clearIfValid(e.target); updateChrome(); });
-    form.addEventListener('change', (e) => { clearIfValid(e.target); updateChrome(); });
+    form.addEventListener('input', (e) => { clearIfValid(e.target); });
+    form.addEventListener('change', (e) => { clearIfValid(e.target); syncConditionals(); });
     form.addEventListener('reset', () => {
       setTimeout(() => {
         steps.forEach((s) => s.classList.remove('is-active'));
         form.querySelectorAll('.waitlist-field.is-invalid, .waitlist-question.is-invalid').forEach(clearFieldError);
+        conditionals.forEach(({ el }) => { el.hidden = true; });
         idx = 0;
         steps[0].classList.add('is-active');
         setState('idle');
@@ -188,31 +248,45 @@
       }, 0);
     });
 
+    // ---- Book-a-call via walkthrough select --------------------------
+    // Selecting "Yes — book a 20-minute call" opens a pre-filled mailto.
+    const walkthroughSel = form.querySelector('select[name="walkthrough"]');
+    if (walkthroughSel) {
+      walkthroughSel.addEventListener('change', () => {
+        if (walkthroughSel.value !== 'yes-call') return;
+        const email = (form.querySelector('input[name="email"]') || {}).value || '';
+        const subject = encodeURIComponent('ShieldTX API — tailored integration call');
+        const body = encodeURIComponent(
+          'Hi ShieldTX team,\n\n' +
+          'I submitted an API access request and would like to walk you through our custody and execution requirements.\n\n' +
+          `Email: ${email}\n\nThanks!`
+        );
+        window.location.href = `mailto:shieldtx-support@availproject.org?subject=${subject}&body=${body}`;
+      });
+    }
+
+    // ---- Submit ------------------------------------------------------
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (form.dataset.state === 'submitting') return;
       if (!revealStepErrors()) return;
-      // Enter on an earlier step should advance, not submit.
       if (idx < questionSteps.length - 1) { goTo(idx + 1); return; }
 
       const data = new FormData(form);
       const payload = {
-        first_name: (data.get('first_name') || '').toString().trim(),
-        last_name: (data.get('last_name') || '').toString().trim(),
         email: (data.get('email') || '').toString().trim(),
-        'trade-type': data.get('trade-type') || null,
-        platforms: data.getAll('platforms'),
-        volume: data.get('volume') || null,
-        protection: data.getAll('protection'),
-        api_interest: data.get('api_interest') || null,
-        company_url: data.get('company_url') || '',
+        use_case: data.get('use_case') || null,
+        venue_coverage: data.get('venue_coverage') || null,
+        other_venues: data.getAll('other_venues'),
+        setup: data.get('setup') || null,
+        walkthrough: data.get('walkthrough') || null,
       };
 
       setState('submitting');
       showError('');
 
       try {
-        const res = await fetch('/api/request-access', {
+        const res = await fetch(form.dataset.endpoint || '/api/api-access', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
@@ -227,7 +301,7 @@
           showError(json.error || 'Submission failed. Please try again.');
         }
       } catch (err) {
-        console.error('[request-access] network error', err);
+        console.error('[api-access] network error', err);
         setState('idle');
         showError('Network error. Please try again.');
       }
@@ -235,13 +309,7 @@
 
     if (doneBtn) {
       doneBtn.addEventListener('click', () => {
-        const modal = form.closest('.modal');
-        if (modal) {
-          const closeBtn = modal.querySelector('[data-modal-close]');
-          if (closeBtn) closeBtn.click();
-        } else if (mode === 'page') {
-          window.location.assign('/');
-        }
+        window.location.assign('/');
       });
     }
 
@@ -264,10 +332,12 @@
       }
     }
 
+    syncConditionals();
     updateChrome();
     return { reset: () => form.reset() };
   };
 
+  // Brand dropdown — same component as request-access-form.js.
   function initDropdown(root) {
     if (root.dataset.boundDropdown === '1') return;
     root.dataset.boundDropdown = '1';

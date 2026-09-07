@@ -38,3 +38,4 @@ demo-source/
 
 # Local Claude Code config (debugger launch, etc.)
 .claude/
+.vercel

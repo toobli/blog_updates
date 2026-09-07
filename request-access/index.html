@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="/styles.css?v=76" />
+  <link rel="stylesheet" href="/styles.css" />
 
   <!-- @partial head-global -->
   <!-- PostHog analytics -->
@@ -99,7 +99,7 @@
         <header class="request-access-head">
           <span class="eyebrow">Private beta</span>
           <h1 class="request-access-title">Request access.</h1>
-          <p class="request-access-sub">500 invites for the first cohort. Three quick steps — we prioritise traders with the most to lose from copy-trading.</p>
+          <p class="request-access-sub">500 invites for the first cohort. Two quick steps — we prioritise traders with the most to lose from copy-trading.</p>
         </header>
 
         <div class="waitlist-mount waitlist-page">
@@ -113,7 +113,7 @@
             </div>
 
             <section class="waitlist-step is-active" data-step="1">
-              <span class="eyebrow">Step 1 of 3</span>
+              <span class="eyebrow">Step 1 of 2</span>
               <h2 class="waitlist-title">Your details.</h2>
               <p class="waitlist-sub">We'll send your invite to this address.</p>
               <label class="waitlist-field">
@@ -131,8 +131,8 @@
             </section>
 
             <section class="waitlist-step" data-step="2">
-              <span class="eyebrow">Step 2 of 3</span>
-              <h2 class="waitlist-title">Tell us about your trading.</h2>
+              <span class="eyebrow">Step 2 of 2</span>
+              <h2 class="waitlist-title">Your trading profile.</h2>
 
               <div class="waitlist-question">
                 <p class="waitlist-question-title">What do you primarily trade?</p>
@@ -188,32 +188,9 @@
                   <div class="waitlist-dropdown-panel" data-dropdown-panel hidden role="listbox"></div>
                 </div>
               </div>
-            </section>
-
-            <section class="waitlist-step" data-step="3">
-              <span class="eyebrow">Step 3 of 3</span>
-              <h2 class="waitlist-title">Your shielding needs.</h2>
 
               <div class="waitlist-question">
-                <p class="waitlist-question-title">Have you been copied or front-run before?</p>
-                <div class="waitlist-dropdown" data-dropdown>
-                  <select class="waitlist-dropdown-native" name="pain" required aria-hidden="true" tabindex="-1">
-                    <option value="" disabled selected hidden>Choose one…</option>
-                    <option value="recurring">Yes — it's a recurring problem</option>
-                    <option value="few-times">Yes — it's happened a few times</option>
-                    <option value="suspect">I suspect so but can't confirm</option>
-                    <option value="no">No / not sure</option>
-                  </select>
-                  <button type="button" class="waitlist-dropdown-trigger" data-dropdown-trigger aria-haspopup="listbox" aria-expanded="false">
-                    <span class="waitlist-dropdown-label is-placeholder">Choose one…</span>
-                    <span class="waitlist-dropdown-caret" aria-hidden="true"></span>
-                  </button>
-                  <div class="waitlist-dropdown-panel" data-dropdown-panel hidden role="listbox"></div>
-                </div>
-              </div>
-
-              <div class="waitlist-question">
-                <p class="waitlist-question-title">How do you currently protect your trades? <span class="waitlist-question-hint">Select all that apply</span></p>
+                <p class="waitlist-question-title">How do you currently protect your onchain trading activity? <span class="waitlist-question-hint">Select all that apply</span></p>
                 <div class="waitlist-dropdown" data-dropdown>
                   <select class="waitlist-dropdown-native" name="protection" multiple required aria-hidden="true" tabindex="-1">
                     <option value="multi-wallet">Multiple wallets</option>
@@ -231,13 +208,13 @@
               </div>
 
               <div class="waitlist-question">
-                <p class="waitlist-question-title">How soon do you need shielded execution?</p>
+                <p class="waitlist-question-title">Do you need access to the ShieldTX API?</p>
                 <div class="waitlist-dropdown" data-dropdown>
-                  <select class="waitlist-dropdown-native" name="urgency" required aria-hidden="true" tabindex="-1">
+                  <select class="waitlist-dropdown-native" name="api_interest" required aria-hidden="true" tabindex="-1">
                     <option value="" disabled selected hidden>Choose one…</option>
-                    <option value="now">Immediately — I'm losing alpha now</option>
-                    <option value="month">Within a month</option>
-                    <option value="exploring">Exploring, no rush</option>
+                    <option value="no">No</option>
+                    <option value="maybe">Maybe in the future</option>
+                    <option value="absolutely">Absolutely need it right away</option>
                   </select>
                   <button type="button" class="waitlist-dropdown-trigger" data-dropdown-trigger aria-haspopup="listbox" aria-expanded="false">
                     <span class="waitlist-dropdown-label is-placeholder">Choose one…</span>
@@ -246,14 +223,6 @@
                   <div class="waitlist-dropdown-panel" data-dropdown-panel hidden role="listbox"></div>
                 </div>
               </div>
-
-              <label class="waitlist-check">
-                <input type="checkbox" name="api_interest" value="yes" />
-                <span class="waitlist-check-box" aria-hidden="true">
-                  <svg viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.2 4.2 8.5 11 1.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </span>
-                <span class="waitlist-check-text">Click here if you want to use the ShieldTX API</span>
-              </label>
             </section>
 
             <section class="waitlist-step waitlist-result" data-step="result">
@@ -325,8 +294,8 @@
   </footer>
   <!-- /@partial footer -->
 
-  <script src="/public-scripts/site-cursor.js?v=1"></script>
-  <script src="/public-scripts/request-access-form.js?v=6"></script>
+  <script src="/public-scripts/site-cursor.js"></script>
+  <script src="/public-scripts/request-access-form.js"></script>
   <script>
     (function () {
       const y = document.getElementById('yr');

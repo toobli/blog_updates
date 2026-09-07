@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API access · ShieldTX</title>
+  <meta name="description" content="Request early API access to ShieldTX. Route Hyperliquid orders through shielded execution without publicly linking positions to your main wallet." />
+  <link rel="canonical" href="https://www.shieldtx.xyz/api-access" />
+
+  <link rel="icon" type="image/svg+xml" href="../assets/ShieldTX_LogoMark.svg" />
+
+  <meta property="og:title" content="API access · ShieldTX" />
+  <meta property="og:description" content="Request early API access to ShieldTX — shielded execution for systematic traders and teams." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://shieldtx.xyz/api-access" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/styles.css" />
+
+  <!-- @partial head-global -->
+  <!-- @partial /partials/head-global.html content is synced by scripts/sync-partials.py -->
+  <!-- /@partial head-global -->
+<meta property="og:image" content="https://shieldtx.xyz/assets/og-image.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta name="twitter:image" content="https://shieldtx.xyz/assets/og-image.jpg" />
+</head>
+<body class="request-access-body">
+  <main class="request-access-main" id="top">
+    <section class="request-access-section">
+      <div class="container request-access-wrap">
+        <header class="request-access-head">
+          <span class="eyebrow">API early access</span>
+          <h1 class="request-access-title">Request API access.</h1>
+          <p class="request-access-sub">Tell us a little about your setup and we'll route your request to the right team.</p>
+        </header>
+
+        <div class="waitlist-mount waitlist-page">
+          <form class="waitlist-form" id="api-access-form" data-state="idle" novalidate data-endpoint="/api/api-access">
+            <section class="waitlist-step is-active" data-step="1">
+              <h2 class="waitlist-title">Request API access.</h2>
+
+              <label class="waitlist-field">
+                <span class="waitlist-label">Email</span>
+                <input class="waitlist-input" type="email" name="email" placeholder="you@company.com" required spellcheck="false" autocomplete="email" />
+              </label>
+
+              <div class="waitlist-question">
+                <p class="waitlist-question-title">How would you use ShieldTX?</p>
+                <div class="waitlist-dropdown" data-dropdown>
+                  <select class="waitlist-dropdown-native" name="use_case" required aria-hidden="true" tabindex="-1">
+                    <option value="" disabled selected hidden>Choose one…</option>
+                    <option value="trading-system">Connect to our trading system or bot</option>
+                    <option value="product-frontend">Add it to an existing product/frontend</option>
+                    <option value="fund-desk">Use it for a fund or trading desk</option>
+                    <option value="exploring">Just exploring</option>
+                  </select>
+                  <button type="button" class="waitlist-dropdown-trigger" data-dropdown-trigger aria-haspopup="listbox" aria-expanded="false">
+                    <span class="waitlist-dropdown-label is-placeholder">Choose one…</span>
+                    <span class="waitlist-dropdown-caret" aria-hidden="true"></span>
+                  </button>
+                  <div class="waitlist-dropdown-panel" data-dropdown-panel hidden role="listbox"></div>
+                </div>
+              </div>
+
+              <div class="waitlist-question">
+                <p class="waitlist-question-title">Which venue coverage do you need?</p>
+                <div class="waitlist-dropdown" data-dropdown>
+                  <select class="waitlist-dropdown-native" name="venue_coverage" required aria-hidden="true" tabindex="-1">
+                    <option value="" disabled selected hidden>Choose one…</option>
+                    <option value="hyperliquid-only">Hyperliquid only</option>
+                    <option value="hyperliquid-plus">Hyperliquid plus other perp venues</option>
+                    <option value="multi-venue">Multi-venue from day one</option>
+                    <option value="not-sure">Not sure yet</option>
+                  </select>
+                  <button type="button" class="waitlist-dropdown-trigger" data-dropdown-trigger aria-haspopup="listbox" aria-expanded="false">
+                    <span class="waitlist-dropdown-label is-placeholder">Choose one…</span>
+                    <span class="waitlist-dropdown-caret" aria-hidden="true"></span>
+                  </button>
+                  <div class="waitlist-dropdown-panel" data-dropdown-panel hidden role="listbox"></div>
+                </div>
+              </div>
+
+              <div class="waitlist-question is-conditional" data-conditional data-show-when="venue_coverage=hyperliquid-plus|multi-venue" hidden>
+                <p class="waitlist-question-title">Which other venues? <span class="waitlist-question-hint">Select all that apply</span></p>
+                <div class="waitlist-dropdown" data-dropdown>
+                  <select class="waitlist-dropdown-native" name="other_venues" multiple aria-hidden="true" tabindex="-1">
+                    <option value="lighter">Lighter</option>
+                    <option value="dydx">dYdX</option>
+                    <option value="gmx">GMX</option>
+                    <option value="aster">Aster</option>
+                    <option value="drift">Drift</option>
+                    <option value="other">Other</option>
+                  </select>
+                  <button type="button" class="waitlist-dropdown-trigger" data-dropdown-trigger aria-haspopup="listbox" aria-expanded="false">
+                    <span class="waitlist-dropdown-label is-placeholder">Select venues…</span>
+                    <span class="waitlist-dropdown-caret" aria-hidden="true"></span>
+                  </button>
+                  <div class="waitlist-dropdown-panel" data-dropdown-panel hidden role="listbox" aria-multiselectable="true"></div>
+                </div>
+              </div>
+
+              <div class="waitlist-question">
+                <p class="waitlist-question-title">Which setup best describes your needs?</p>
+                <div class="waitlist-dropdown" data-dropdown>
+                  <select class="waitlist-dropdown-native" name="setup" required aria-hidden="true" tabindex="-1">
+                    <option value="" disabled selected hidden>Choose one…</option>
+                    <option value="shieldtx-wallets">ShieldTX can handle the execution wallets</option>
+                    <option value="existing-custodian">We need to use our existing custodian</option>
+                    <option value="multisig">We require multisig or approval workflows</option>
+                    <option value="white-label">We need a dedicated or white-label integration</option>
+                    <option value="not-sure">Not sure yet</option>
+                  </select>
+                  <button type="button" class="waitlist-dropdown-trigger" data-dropdown-trigger aria-haspopup="listbox" aria-expanded="false">
+                    <span class="waitlist-dropdown-label is-placeholder">Choose one…</span>
+                    <span class="waitlist-dropdown-caret" aria-hidden="true"></span>
+                  </button>
+                  <div class="waitlist-dropdown-panel" data-dropdown-panel hidden role="listbox"></div>
+                </div>
+              </div>
+
+              <div class="waitlist-question is-conditional" data-conditional data-show-when="setup=" data-not-when="shieldtx-wallets" hidden>
+                <p class="waitlist-question-title">Would you like to walk us through your custody and execution requirements?</p>
+                <div class="waitlist-dropdown" data-dropdown>
+                  <select class="waitlist-dropdown-native" name="walkthrough" aria-hidden="true" tabindex="-1">
+                    <option value="" disabled selected hidden>Choose one…</option>
+                    <option value="no-submit">No — submit my request as is</option>
+                    <option value="yes-call">Yes — book a 20-minute call</option>
+                  </select>
+                  <button type="button" class="waitlist-dropdown-trigger" data-dropdown-trigger aria-haspopup="listbox" aria-expanded="false">
+                    <span class="waitlist-dropdown-label is-placeholder">Choose one…</span>
+                    <span class="waitlist-dropdown-caret" aria-hidden="true"></span>
+                  </button>
+                  <div class="waitlist-dropdown-panel" data-dropdown-panel hidden role="listbox"></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="waitlist-step waitlist-result" data-step="result">
+              <span class="eyebrow" data-result-eyebrow>Request received</span>
+              <h2 class="waitlist-title" data-result-title>Thanks — we'll be in touch.</h2>
+              <p class="waitlist-sub" data-result-sub>Your API access request is in. We'll reach out as capacity opens up.</p>
+            </section>
+
+            <p class="waitlist-error" data-form-error role="alert" aria-live="polite" hidden></p>
+
+            <div class="waitlist-nav">
+              <button type="submit" class="btn-pill btn-primary waitlist-submit" data-waitlist-submit>Submit request <span aria-hidden="true">→</span></button>
+              <button type="button" class="btn-pill btn-primary waitlist-done" data-waitlist-done hidden>Done</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/public-scripts/site-cursor.js"></script>
+  <script src="/public-scripts/api-access-form.js"></script>
+  <script>
+    (function () {
+      var form = document.getElementById('api-access-form');
+      if (form && window.ShieldTX && window.ShieldTX.bindApiAccessForm) {
+        window.ShieldTX.bindApiAccessForm(form);
+      }
+      try {
+        var prefill = sessionStorage.getItem('apiWaitlistEmail');
+        if (prefill && form) {
+          var input = form.querySelector('input[name="email"]');
+          if (input && !input.value) input.value = prefill;
+        }
+      } catch (_) {}
+    })();
+  </script>
+</body>
+</html>

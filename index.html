@@ -25,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=76" />
+  <link rel="stylesheet" href="styles.css" />
 
   <!-- @partial head-global -->
   <!-- PostHog analytics -->
@@ -770,6 +770,32 @@
       </div>
     </section>
 
+    <!-- API WAITLIST — dark band, email capture for API-based access -->
+    <section class="api-waitlist" id="api-waitlist">
+      <div class="scan-band">
+        <div class="scan-bg" aria-hidden="true">
+          <div class="scan-blob s1"></div>
+          <div class="scan-blob s2"></div>
+          <div class="scan-grid-overlay"></div>
+        </div>
+        <div class="container">
+          <header class="scan-head">
+            <span class="eyebrow inv">API Early Access</span>
+            <h2 class="section-title inv" data-split>Shield your trades via API.</h2>
+            <p class="scan-sub" data-reveal>Route Hyperliquid orders through ShieldTX without publicly linking positions to your main wallet. Early API access is available to selected teams and systematic traders.</p>
+          </header>
+
+          <form class="scan-form" id="api-waitlist-form" data-reveal novalidate data-endpoint="/api/api-waitlist" data-next="/api-access/">
+            <input class="scan-form-input" id="api-waitlist-email" type="email" placeholder="you@company.com" spellcheck="false" autocomplete="email" aria-describedby="api-waitlist-error" />
+            <button class="btn-pill btn-primary" id="api-waitlist-submit" type="submit">Request API Access</button>
+          </form>
+          <p class="scan-form-error" id="api-waitlist-error" role="alert" hidden></p>
+
+          <p class="api-waitlist-status" data-reveal id="api-waitlist-status" role="status" hidden>Thanks — taking you to the API access request…</p>
+        </div>
+      </div>
+    </section>
+
     <!-- 12. Q&A -->
     <section class="faq" id="faq">
       <div class="container">
@@ -973,7 +999,7 @@
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="/public-scripts/site-cursor.js?v=3"></script>
-  <script src="script.js?v=33"></script>
+  <script src="/public-scripts/site-cursor.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
