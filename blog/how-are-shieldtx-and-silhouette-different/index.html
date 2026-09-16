@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blog · ShieldTX</title>
-  <meta name="description" content="Notes from the ShieldTX team on private trading, threat models, and how we're building the product." />
-  <link rel="canonical" href="https://www.shieldtx.xyz/blog" />
+  <title>How Are ShieldTX and Silhouette Different? · ShieldTX</title>
+  <meta name="description" content="ShieldTX keeps Hyperliquid perp positions unlinked from your wallet. Silhouette is an RFQ layer for execution price on size. Here's how they differ." />
+  <link rel="canonical" href="https://www.shieldtx.xyz/blog/how-are-shieldtx-and-silhouette-different" />
 
   <link rel="icon" type="image/svg+xml" href="/assets/ShieldTX_LogoMark.svg" />
   <link rel="apple-touch-icon" href="/assets/ShieldTX_LogoMark.svg" />
 
-  <meta property="og:title" content="Blog · ShieldTX" />
-  <meta property="og:description" content="Notes from the ShieldTX team on private trading, threat models, and how we're building the product." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://shieldtx.xyz/blog" />
+  <meta property="og:title" content="How Are ShieldTX and Silhouette Different? · ShieldTX" />
+  <meta property="og:description" content="ShieldTX and Silhouette both operate in the Hyperliquid privacy space, but solve different problems. Here's how each one differs and when to use which." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://shieldtx.xyz/blog/how-are-shieldtx-and-silhouette-different" />
   <meta property="og:image" content="https://shieldtx.xyz/assets/og-image.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Blog · ShieldTX" />
-  <meta name="twitter:description" content="Notes from the ShieldTX team on private trading, threat models, and how we're building the product." />
+  <meta name="twitter:title" content="How Are ShieldTX and Silhouette Different? · ShieldTX" />
+  <meta name="twitter:description" content="ShieldTX and Silhouette both operate in the Hyperliquid privacy space, but solve different problems. Here's how each one differs and when to use which." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -93,93 +93,60 @@
   <!-- /@partial nav -->
 
   <main id="top">
-    <section class="blog-index">
-      <div class="blog-index-wrap">
-        <header class="blog-index-head">
-          <h1 class="blog-index-title">Blogs</h1>
-          <p class="blog-index-sub">Notes on private trading, threat models, and how we're building ShieldTX.</p>
-        </header>
+    <article class="blog-post">
+      <div class="blog-post-wrap">
+        <a href="/blog" class="blog-post-back">← Back to all posts</a>
+        <div class="eyebrow">ShieldTX vs Silhouette</div>
+        <h1>How are ShieldTX and Silhouette different?</h1>
+        <p class="blog-post-meta">
+          <span>15 September 2026</span>
+          <span>3 min read</span>
+        </p>
 
-        <!-- POSTS STACK — text-only single-column entries. Each post is a
-             semantic <article> with title, meta, lede, and a Read → CTA.
-             Hover reveals a brand-blue stripe on the left. Newest first. -->
-        <div class="blog-stack">
+        <p class="intro">TLDR: ShieldTX is the only institutional grade shielding solution for perps on Hyperliquid. Silhouette is an RFQ solution for Hyperliquid.</p>
 
-          <article class="blog-entry">
-            <a class="blog-entry-link" href="/blog/how-are-shieldtx-and-silhouette-different">
-              <span class="blog-entry-meta">15 September 2026 · 3 min read</span>
-              <h2 class="blog-entry-title">How are ShieldTX and Silhouette different?</h2>
-              <p class="blog-entry-lede">ShieldTX and Silhouette both operate in the Hyperliquid privacy space, but they solve different problems. Here's how each one differs and when to use which.</p>
-              <span class="blog-entry-cta">Read →</span>
-            </a>
-          </article>
+        <p><a href="https://shieldtx.xyz/" target="_blank">ShieldTX</a> and <a href="https://silhouette.exchange/" target="_blank">Silhouette</a> both operate in the Hyperliquid privacy space and target traders who move meaningful size. This post outlines how each product differs and when you would use one or the other.</p>
 
-          <article class="blog-entry">
-            <a class="blog-entry-link" href="/blog/shielded-perpetual-trading-on-hyperliquid">
-              <span class="blog-entry-meta">7 September 2026 · 9 min read</span>
-              <h2 class="blog-entry-title">Shielded Perpetual Trading on Hyperliquid: What It Is and How It Works</h2>
-              <p class="blog-entry-lede">Every Hyperliquid position is public. Learn what shielded perpetual trading is, how it works, and how it stops copybots and whale hunters from tracking you.</p>
-              <span class="blog-entry-cta">Read →</span>
-            </a>
-          </article>
+        <h2 id="silhouettes-shift-from-tee-to-rfq">Some background: Silhouette's shift from TEE to RFQ<a href="#silhouettes-shift-from-tee-to-rfq" class="anchor-link" aria-label="Link to this section"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg></a></h2>
 
-          <article class="blog-entry">
-            <a class="blog-entry-link" href="/blog/how-to-tell-if-youre-being-copy-traded-on-hyperliquid">
-              <span class="blog-entry-meta">27 July 2026 · 8 min read</span>
-              <h2 class="blog-entry-title">How to Tell If You're Being Copy Traded on Hyperliquid</h2>
-              <p class="blog-entry-lede">Learn how to tell if someone is copying your Hyperliquid trades. Scan your wallet, detect copy trading, and protect your strategy.</p>
-              <span class="blog-entry-cta">Read →</span>
-            </a>
-          </article>
+        <p>Silhouette originally launched as a confidential spot exchange on Hyperliquid, built on Trusted Execution Environments (TEEs) to keep trade details private during matching.</p>
 
-          <article class="blog-entry">
-            <a class="blog-entry-link" href="/blog/how-to-trade-perps-privately-on-hyperliquid">
-              <span class="blog-entry-meta">24 July 2026 · 12 min read</span>
-              <h2 class="blog-entry-title">How to Trade Perps Privately on the Hyperliquid Orderbook</h2>
-              <p class="blog-entry-lede">A step-by-step guide to trading perps on Hyperliquid without exposing your positions, PnL, or strategy to copybots and surveillance tools.</p>
-              <span class="blog-entry-cta">Read →</span>
-            </a>
-          </article>
+        <p>Its current positioning is different however. Now it describes itself as a universal block trading layer, built around a request-for-quote (RFQ) model. This comparison focuses on the current RFQ product, as this is what Silhouette is building today.</p>
 
-          <article class="blog-entry">
-            <a class="blog-entry-link" href="/blog/what-trading-in-public-costs-whales-on-hyperliquid">
-              <span class="blog-entry-meta">22 July 2026 · 8 min read</span>
-              <h2 class="blog-entry-title">The surveillance tax: What Trading in Public Costs Whales on Hyperliquid</h2>
-              <p class="blog-entry-lede">Every position you open on Hyperliquid tells the market something. Here is what public trading costs whales, and how execution isolation changes the game.</p>
-              <span class="blog-entry-cta">Read →</span>
-            </a>
-          </article>
+        <h2 id="what-shieldtx-protects">What ShieldTX protects<a href="#what-shieldtx-protects" class="anchor-link" aria-label="Link to this section"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg></a></h2>
 
-          <article class="blog-entry">
-            <a class="blog-entry-link" href="/blog/what-is-copy-trade-protection">
-              <span class="blog-entry-meta">22 May 2026 · 7 min read</span>
-              <h2 class="blog-entry-title">What Is Copy Trade Protection? A Trader's Guide to Keeping Your Strategy Yours</h2>
-              <p class="blog-entry-lede">Copy trade protection shields your on-chain trading activity from being copied, mirrored, or analyzed.</p>
-              <span class="blog-entry-cta">Read →</span>
-            </a>
-          </article>
+        <p>ShieldTX is a shielded execution layer for Hyperliquid perps. Trades route to Hyperliquid's own public order book and provide access to the same liquidity, price discovery and fills as any other perp trade on Hyperliquid.</p>
 
-          <article class="blog-entry">
-            <a class="blog-entry-link" href="/blog/hyperbot-dexly-hyperdash-copy-trading-tools">
-              <span class="blog-entry-meta">15 May 2026 · 9 min read</span>
-              <h2 class="blog-entry-title">Hyperbot, Dexly &amp; HyperDash: Are They Copying Your Trades?</h2>
-              <p class="blog-entry-lede">Hyperbot, Dexly, and HyperDash are actively copying Hyperliquid traders. How each tool works, why they're a problem, and what to do.</p>
-              <span class="blog-entry-cta">Read →</span>
-            </a>
-          </article>
+        <p>What's shielded is the link between your funding wallet and the wallet that holds the resulting position. ShieldTX routes each trade through a fresh wallet, so the position, PnL, and liquidation level visible on-chain aren't publicly traceable back to your identity or trading history.</p>
 
-          <article class="blog-entry">
-            <a class="blog-entry-link" href="/blog/how-copy-traders-are-stealing-your-edge">
-              <span class="blog-entry-meta">8 May 2026 · 6 min read</span>
-              <h2 class="blog-entry-title">How Copy Traders Are Stealing Your Edge on Hyperliquid</h2>
-              <p class="blog-entry-lede">Your Hyperliquid trades are public. How copy trading bots track your positions in real time, and how to trade without exposing your strategy.</p>
-              <span class="blog-entry-cta">Read →</span>
-            </a>
-          </article>
+        <p>This addresses what happens <em>after</em> a position becomes public, when copybots, whale-hunters, and clustering tools reading a visible position and begin acting on it by mirroring entries, anticipating exits, and building a behavioral profile over time.</p>
 
-        </div>
+        <h2 id="what-silhouette-protects">What Silhouette protects<a href="#what-silhouette-protects" class="anchor-link" aria-label="Link to this section"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg></a></h2>
+
+        <p>Silhouette's RFQ model is built to address execution price on size. A taker requests a price for a specific amount and market makers compete to quote it. The price is set before the order is exposed to the market, rather than discovered by sweeping the public book and moving the price as you go.</p>
+
+        <p>As of writing, equities are live on Silhouette's RFQ model, while spot and perps are listed as coming soon.</p>
+
+        <h2 id="what-each-addresses-on-the-identity-question">What each addresses on the identity question<a href="#what-each-addresses-on-the-identity-question" class="anchor-link" aria-label="Link to this section"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg></a></h2>
+
+        <p>For ShieldTX, perp positions are not publicly linked to the wallet that funded them.</p>
+
+        <p>For Silhouette, the settlement flow for equities routes through a pooled address (an "omnibus") rather than the individual taker's own wallet appearing directly in the on-chain settlement event. For perpetuals, the position sits under the trader's own known Hyperliquid account.</p>
+
+        <h2 id="which-one-addresses-your-problem">Which one addresses your problem<a href="#which-one-addresses-your-problem" class="anchor-link" aria-label="Link to this section"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg></a></h2>
+
+        <ul>
+          <li><strong>Your positions get copied, hunted, or judged once they're visible, and it keeps happening every time you trade.</strong> That's an identity/attribution question. ShieldTX is built to address it, across all Hyperliquid perp markets, today.</li>
+          <li><strong>You're moving enough size that market impact meaningfully affects your execution price on a given trade.</strong> That's what Silhouette's RFQ model is built to address.</li>
+        </ul>
+
+        <p>Request access to ShieldTX's private beta.</p>
+
+        <p><a class="cta" href="/request-access">Request access</a></p>
+
+        <p><em>*Accurate as of September 2026.</em></p>
       </div>
-    </section>
+    </article>
   </main>
 
   <!-- Footer -->
@@ -236,6 +203,19 @@
     (function () {
       const y = document.getElementById('yr');
       if (y) y.textContent = new Date().getFullYear();
+
+      // Copy-link anchor behavior (preserves the source post's interaction)
+      document.querySelectorAll('.anchor-link').forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          const url = window.location.origin + window.location.pathname + link.getAttribute('href');
+          if (!navigator.clipboard) return;
+          navigator.clipboard.writeText(url).then(function () {
+            link.classList.add('copied');
+            setTimeout(function () { link.classList.remove('copied'); }, 2000);
+          });
+        });
+      });
     })();
   </script>
 </body>
